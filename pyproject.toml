@@ -1,0 +1,11 @@
+[project]
+name = "todo"
+version = "0.0.1"
+description = "A to-do list using FastAPI"
+authors = [
+    {name = "M", email = "m@mathsistor.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}

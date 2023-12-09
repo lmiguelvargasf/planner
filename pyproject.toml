@@ -5,7 +5,9 @@ description = "A to-do list using FastAPI"
 authors = [
     {name = "M", email = "m@mathsistor.com"},
 ]
-dependencies = []
+dependencies = [
+    "fastapi[all]>=0.104.1",
+]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}

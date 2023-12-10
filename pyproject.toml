@@ -12,6 +12,9 @@ requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
 
+[tool.pdm.scripts]
+run-server = "uvicorn todo.main:app"
+
 [tool.pdm.dev-dependencies]
 test = [
     "pytest>=7.4.3",

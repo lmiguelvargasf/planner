@@ -19,6 +19,9 @@ run-server = "uvicorn todo.main:app"
 test = [
     "pytest>=7.4.3",
 ]
+lint = [
+    "ruff>=0.1.7",
+]
 
 [tool.pytest.ini_options]
 testpaths = [

@@ -24,3 +24,6 @@ test = [
 testpaths = [
     "tests",
 ]
+
+[tool.ruff]
+select = ["D", "E", "F", "I", "N", "W"]

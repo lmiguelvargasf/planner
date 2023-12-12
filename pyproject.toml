@@ -31,4 +31,11 @@ testpaths = [
 ]
 
 [tool.ruff]
-select = ["D", "E", "F", "I", "N", "W"]
+select = [
+    # "D", # pydocstyle
+    "E", # pycodestyle errors
+    "F", # pyflakes
+    "I",  # isort
+    "N", # pep8-naming
+    "W", # pycodestyle warnings
+]

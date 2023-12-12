@@ -14,6 +14,8 @@ license = {text = "MIT"}
 
 [tool.pdm.scripts]
 run-server = "uvicorn todo.main:app"
+lint = "ruff check --force-exclude"
+format = "ruff format --force-exclude"
 
 [tool.pdm.dev-dependencies]
 test = [

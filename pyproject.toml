@@ -24,6 +24,9 @@ test = [
 lint = [
     "ruff>=0.1.7",
 ]
+debug = [
+    "jupyterlab>=4.0.9",
+]
 
 [tool.pytest.ini_options]
 testpaths = [

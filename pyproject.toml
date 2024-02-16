@@ -6,10 +6,10 @@ authors = [
     {name = "M", email = "m@mathsistor.com"},
 ]
 dependencies = [
-    "fastapi[all]>=0.104.1",
+    "fastapi[all]>=0.109.2",
     "asyncpg>=0.29.0",
-    "sqlalchemy>=2.0.23",
-    "alembic>=1.13.0",
+    "sqlalchemy>=2.0.27",
+    "alembic>=1.13.1",
 ]
 requires-python = ">=3.12"
 readme = "README.md"
@@ -23,13 +23,13 @@ test = "pytest tests"
 
 [tool.pdm.dev-dependencies]
 test = [
-    "pytest>=7.4.3",
+    "pytest>=8.0.0",
 ]
 lint = [
-    "ruff>=0.1.7",
+    "ruff>=0.2.1",
 ]
 debug = [
-    "jupyterlab>=4.0.9",
+    "jupyterlab>=4.1.1",
 ]
 
 [tool.pytest.ini_options]

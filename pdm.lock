@@ -5,7 +5,7 @@
 groups = ["default", "test", "lint", "debug"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:0e75abf8019ab7ceb915ecfc7c1f1deff69d7c62f6749b8b61d317bee032d2c3"
+content_hash = "sha256:11b3582eb597a171e41373f2c3789dbe1d063bf613860359b8f71214bb662a00"
 
 [[package]]
 name = "alembic"

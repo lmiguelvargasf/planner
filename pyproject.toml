@@ -8,7 +8,6 @@ authors = [
 dependencies = [
     "fastapi[all]>=0.109.2",
     "asyncpg>=0.29.0",
-    "sqlalchemy>=2.0.27",
     "alembic>=1.13.1",
 ]
 requires-python = ">=3.12"

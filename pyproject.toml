@@ -31,6 +31,9 @@ lint = [
 debug = [
     "jupyterlab>=4.1.1",
 ]
+config = [
+    "python-dotenv>=1.0.1",
+]
 
 [tool.pytest.ini_options]
 testpaths = [

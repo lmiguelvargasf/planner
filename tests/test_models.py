@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from todo.models.pydantic_models import TodoItem
+from todo.schemas import TodoItem
 
 
 def test_todo_item_creation_with_valid_data():

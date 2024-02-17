@@ -8,6 +8,10 @@ This project implements a to-do list using FastAPI.
 
 The following dependencies are expected to be installed on your machine:
 
-- Python 3.12
-- PostgreSQL
-- PDM
+- [Python 3.12][python]
+- [PostgreSQL][postgresql]
+- [PDM][pdm]
+
+[pdm]: https://pdm-project.org/latest/
+[postgresql]: https://www.postgresql.org/
+[python]: https://www.python.org/

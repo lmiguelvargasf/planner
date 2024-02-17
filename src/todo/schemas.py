@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class TodoItem(BaseModel):
-    uuid: _uuid.UUID | None = None
+    uuid: _uuid.UUID = Field(default_factory=lambda: _uuid.uuid4())
     title: str
     description: str | None = None
     completed: bool = False

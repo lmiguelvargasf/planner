@@ -1,7 +1,8 @@
 from datetime import datetime
 
 import pytest
-from todo.schemas import TodoItem
+
+from src.todo.schemas import TodoItem
 
 
 def test_todo_item_creation_with_valid_data():

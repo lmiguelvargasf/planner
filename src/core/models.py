@@ -1,5 +1,5 @@
 import uuid as _uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import text
 from sqlmodel import Field, SQLModel
@@ -15,13 +15,13 @@ class BaseModel(SQLModel):
     )
 
     created_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(UTC),
         nullable=False,
         sa_column_kwargs=dict(server_default=text("current_timestamp(0)")),
     )
 
     updated_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(UTC),
         nullable=False,
         sa_column_kwargs=dict(
             server_default=text("current_timestamp(0)"),

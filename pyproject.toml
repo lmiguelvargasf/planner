@@ -17,7 +17,7 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.pdm.scripts]
-start = "dotenv run uvicorn main:app"
+start = "dotenv run uvicorn planner.main:app"
 test = "dotenv run pytest tests"
 
 [tool.pdm.dev-dependencies]

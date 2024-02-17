@@ -1,10 +1,8 @@
 from fastapi import FastAPI
 
-from src.todo.schemas import HealthCheck
-
 app = FastAPI()
 
 
-@app.get("/", response_model=HealthCheck)
-def app_status():
-    return HealthCheck()
+@app.get("/", include_in_schema=False)
+def app_status() -> dict[str, str]:
+    return dict(status="up")

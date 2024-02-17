@@ -17,7 +17,7 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.pdm.scripts]
-run-server = "uvicorn main:app"
+start = "uvicorn main:app"
 test = "pytest tests"
 
 [tool.pdm.dev-dependencies]

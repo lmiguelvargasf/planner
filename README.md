@@ -94,7 +94,7 @@ After the database setup, the following steps are followed to set up the project
     pdm run start
     ```
 
-6. Open a web browser and navigate to [`localhost:8000`](http://localhost:8000). The follwing response should be seen:
+6. Access the application by clicking on the following link: [`localhost:8000`](http://localhost:8000). The following response should be seen:
     ```
     {"status": "up"}
     ```

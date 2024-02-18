@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from planner.todo.models import TodoItem
+from planner.todos.models import TodoItem
 
 
 def test_todo_item_creation_with_valid_data():

@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 
 from sqlalchemy import text
 from sqlalchemy.orm import declared_attr
+from sqlalchemy.sql import func
 from sqlmodel import Field, SQLModel
 
 
@@ -43,15 +44,15 @@ class BaseModel(SQLModel):
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         nullable=False,
-        sa_column_kwargs=dict(server_default=text("current_timestamp(0)")),
+        sa_column_kwargs=dict(server_default=func.now()),
     )
 
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         nullable=False,
         sa_column_kwargs=dict(
-            server_default=text("current_timestamp(0)"),
-            onupdate=text("current_timestamp(0)"),
+            server_default=func.now(),
+            onupdate=func.now(),
         ),
     )
 

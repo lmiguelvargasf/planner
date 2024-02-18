@@ -55,7 +55,17 @@ Before the project setup, follow these steps for database setup:
     CREATE DATABASE planner OWNER postgres;
     ```
 
-5. Exit the PostgreSQL shell:
+5. Connect to the `planner` database:
+    ```sql
+    \c planner
+    ```
+
+6. Create the `uuid-ossp` extension if it doesn't exist. This extension is needed to generate UUIDs for our database records:
+    ```sql
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    ```
+
+7. Exit the PostgreSQL shell:
     ```sql
     \q
     ```

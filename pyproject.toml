@@ -9,7 +9,7 @@ dependencies = [
     "fastapi[all]>=0.109.2",
     "asyncpg>=0.29.0",
     "alembic>=1.13.1",
-    "sqlmodel>=0.0.14",
+    "sqlmodel>=0.0.16",
     "sqlalchemy[asyncio]>=2.0.27",
 ]
 requires-python = ">=3.12"
@@ -22,10 +22,10 @@ test = "dotenv run pytest tests"
 
 [tool.pdm.dev-dependencies]
 test = [
-    "pytest>=8.0.0",
+    "pytest>=8.0.1",
 ]
 lint = [
-    "ruff>=0.2.1",
+    "ruff>=0.2.2",
 ]
 debug = [
     "jupyterlab>=4.1.1",

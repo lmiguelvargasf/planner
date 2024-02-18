@@ -3,6 +3,7 @@ import uuid as _uuid
 from datetime import UTC, datetime
 
 from sqlalchemy import text
+from sqlalchemy.orm import declared_attr
 from sqlmodel import Field, SQLModel
 
 
@@ -53,3 +54,8 @@ class BaseModel(SQLModel):
             onupdate=text("current_timestamp(0)"),
         ),
     )
+
+    @declared_attr.directive
+    @classmethod
+    def __tablename__(cls) -> str:
+        return camel_to_snake(cls.__name__)

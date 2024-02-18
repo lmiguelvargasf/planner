@@ -56,7 +56,7 @@ Before the project setup, follow these steps for database setup:
     ```
 
 5. Connect to the `planner` database:
-    ```sql
+    ```bash
     \c planner
     ```
 
@@ -66,7 +66,7 @@ Before the project setup, follow these steps for database setup:
     ```
 
 7. Exit the PostgreSQL shell:
-    ```sql
+    ```bash
     \q
     ```
 

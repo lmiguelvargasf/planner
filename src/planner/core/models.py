@@ -1,5 +1,6 @@
 import re
 import uuid as _uuid
+from abc import ABC
 from datetime import UTC, datetime
 
 from sqlalchemy import text
@@ -32,7 +33,7 @@ def camel_to_snake(camel_str: str) -> str:
     return snake_str.lower()
 
 
-class BaseModel(SQLModel):
+class BaseModel(SQLModel, ABC):
     uuid: _uuid.UUID = Field(
         default_factory=_uuid.uuid4,
         primary_key=True,

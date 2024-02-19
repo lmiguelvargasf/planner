@@ -65,6 +65,14 @@ class TimeStampedMixin(SQLModel):
 
 
 class BaseModel(UUIDMixin, TimeStampedMixin, ABC):
+    """
+    Abstract base model that standardizes table naming and database structure.
+
+    Table names are derived automatically from class names, following a
+    snake_case convention. This class has been designed for extension by
+    model classes, not for direct instantiation.
+    """
+
     @declared_attr.directive
     @classmethod
     def __tablename__(cls) -> str:

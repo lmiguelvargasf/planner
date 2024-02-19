@@ -105,7 +105,38 @@ After the database setup, the following steps are followed to set up the project
     {"status": "up"}
     ```
 
+## Jupyter Notebook Usage
+
+It is encouraged the use of Jupyter notebooks for data analysis and exploration
+to facilitate interactive development and data visualization.
+
+- **Storage:** Please place all notebooks in the [`./notebooks`](./notebooks/) directory.
+- **Naming Convention:** Name the notebooks using the format `YYYY-MM-DD_brief_description.ipynb`.
+This convention organizes notebooks chronologically and provides a quick insight into their contents.
+
+#### Pre-commit Hook: `nbstripout`
+
+To maintain a clean repository, the [`nbstripout`][nbstripout] pre-commit hook is used to strip outputs from Jupyter notebooks, which can significantly reduce file sizes.
+
+### Launching JupyterLab
+
+JupyterLab can be launched using the following command:
+
+```bash
+dotenv run jupyter lab --notebook-dir=./notebooks
+```
+
+It can also be initiated through pdm scripts:
+
+```bash
+pdm run lab
+```
+
+Executing either command starts the JupyterLab server, enabling access to notebooks via the web interface.
+
+
 [homebrew]: https://brew.sh/
+[nbstripout]: https://github.com/kynan/nbstripout
 [pdm]: https://pdm-project.org/latest/
 [postgres-linux]: https://askubuntu.com/questions/1206416/how-to-start-postgresql
 [postgres-windows]: https://stackoverflow.com/questions/36629963/how-can-i-start-postgresql-on-windows

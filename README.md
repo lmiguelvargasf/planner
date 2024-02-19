@@ -89,7 +89,7 @@ After the database setup, the following steps are followed to set up the project
     ```bash
     cp .env.example .env
     ```
-   Open the `.env` file and replace the placeholders in the `DATABASE_URL` with the appropriate values. The connection string should reflect the values used in the Database Setup section. For example:
+   Open the `.env` file and replace the placeholders in the `DATABASE_URL` with the appropriate values. The connection string should reflect the values used in the [Database Setup](#database-setup) section. For example:
     ```
     DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/planner
     ```

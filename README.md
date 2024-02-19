@@ -37,12 +37,12 @@ Before the project setup, follow these steps for database setup:
     brew services start postgresql
     ```
 
-2. Connect to the default `postgres` database:
+1. Connect to the default `postgres` database:
     ```bash
     psql postgres
     ```
 
-3. If the `postgres` user does not exist, create a new user named `postgres` with password `postgres`:
+1. If the `postgres` user does not exist, create a new user named `postgres` with password `postgres`:
     ```sql
     CREATE USER postgres WITH PASSWORD 'postgres';
     ```
@@ -51,12 +51,12 @@ Before the project setup, follow these steps for database setup:
     ALTER USER postgres WITH PASSWORD 'postgres';
     ```
 
-4. Create a new database named `planner` owned by the `postgres` user:
+1. Create a new database named `planner` owned by the `postgres` user:
     ```sql
     CREATE DATABASE planner OWNER postgres;
     ```
 
-5. Exit the PostgreSQL shell:
+1. Exit the PostgreSQL shell:
     ```bash
     \q
     ```

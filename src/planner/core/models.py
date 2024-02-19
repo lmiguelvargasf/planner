@@ -1,4 +1,3 @@
-import re
 from abc import ABC
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
@@ -8,29 +7,7 @@ from sqlalchemy.orm import declared_attr
 from sqlalchemy.sql import func
 from sqlmodel import Field, SQLModel
 
-
-def camel_to_snake(camel_str: str) -> str:
-    """
-    Convert a CamelCase string to snake_case.
-
-    The implementation of this function is taken directly from the accepted answer
-    to a StackOverflow question. See the following URL for reference:
-
-    https://shorturl.at/hABI1
-
-
-    Args:
-        camel_str: a string in CamelCase format.
-
-    Returns:
-        A string in snake_case format.
-    """
-    # Add underscore before uppercase followed by lowercase
-    temp_str = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", camel_str)
-    # Add underscore before lowercase or digit followed by uppercase
-    snake_str = re.sub("([a-z0-9])([A-Z])", r"\1_\2", temp_str)
-
-    return snake_str.lower()
+from .utils import camel_to_snake
 
 
 class UUIDMixin(SQLModel):

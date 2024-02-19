@@ -7,7 +7,7 @@ from planner.core.utils import camel_to_snake
     [
         pytest.param("Base", "base", id="one_word"),
         pytest.param("UUIDMixin", "uuid_mixin", id="all_caps_word"),
-        pytest.param("TimeStampedMixin", "time_stamped_mixin", id="mixed_case_word"),
+        pytest.param("TimeStampedMixin", "time_stamped_mixin", id="multiple_words"),
         pytest.param("Base2Model3", "base2_model3", id="mixed_case_word_with_digits"),
     ],
 )

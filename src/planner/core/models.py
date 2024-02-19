@@ -33,7 +33,7 @@ def camel_to_snake(camel_str: str) -> str:
     return snake_str.lower()
 
 
-class BaseModel(SQLModel, ABC):
+class UUIDMixin(SQLModel):
     uuid: _uuid.UUID = Field(
         default_factory=_uuid.uuid4,
         primary_key=True,
@@ -42,6 +42,8 @@ class BaseModel(SQLModel, ABC):
         sa_column_kwargs=dict(server_default=text("gen_random_uuid()"), unique=True),
     )
 
+
+class TimeStampedMixin(SQLModel):
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         nullable=False,
@@ -57,6 +59,8 @@ class BaseModel(SQLModel, ABC):
         ),
     )
 
+
+class BaseModel(UUIDMixin, TimeStampedMixin, ABC):
     @declared_attr.directive
     @classmethod
     def __tablename__(cls) -> str:

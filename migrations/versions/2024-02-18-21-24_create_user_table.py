@@ -1,8 +1,8 @@
-"""Create User table
+"""Create user table
 
-Revision ID: 5d3c913528f2
+Revision ID: fac4b3626011
 Revises: None (first migration)
-Create Date: 2024-02-18 11:52:33.293017
+Create Date: 2024-02-18 21:24:53.257244
 
 """
 from typing import Sequence
@@ -12,7 +12,7 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "5d3c913528f2"
+revision: str = "fac4b3626011"
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -29,7 +29,13 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column("first_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("middle_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("last_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column(
+            "second_last_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True
+        ),
+        sa.Column("date_of_birth", sa.Date(), nullable=True),
+        sa.Column("sex", sa.Enum("MALE", "FEMALE", name="sex"), nullable=True),
         sa.Column("email", sa.String(), nullable=False),
         sa.Column("hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column(

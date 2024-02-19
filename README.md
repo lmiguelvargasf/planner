@@ -70,17 +70,17 @@ After the database setup, the following steps are followed to set up the project
     git clone https://github.com/lmiguelvargasf/planner.git
     ```
 
-2. Navigate into the project directory:
+1. Navigate into the project directory:
     ```bash
     cd planner
     ```
 
-3. Install the project dependencies using PDM:
+1. Install the project dependencies using PDM:
     ```bash
     pdm install
     ```
 
-4. Copy the `.env.example` file to `.env`:
+1. Copy the `.env.example` file to `.env`:
     ```bash
     cp .env.example .env
     ```
@@ -90,12 +90,12 @@ After the database setup, the following steps are followed to set up the project
     ```
     In this example, `postgres` is the username and password, `localhost` is the host, `5432` is the port (default PostgreSQL port), and `planner` is the database.
 
-5. Run the project:
+1. Run the project:
     ```bash
     pdm run start
     ```
 
-6. Access the application by clicking on the following link: [`localhost:8000`](http://localhost:8000). The following response should be seen:
+1. Access the application by clicking on the following link: [`localhost:8000`](http://localhost:8000). The following response should be seen:
     ```
     {"status": "up"}
     ```

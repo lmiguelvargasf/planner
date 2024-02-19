@@ -1,7 +1,7 @@
 import re
-import uuid as _uuid
 from abc import ABC
 from datetime import UTC, datetime
+from uuid import UUID, uuid4
 
 from sqlalchemy import text
 from sqlalchemy.orm import declared_attr
@@ -36,8 +36,8 @@ def camel_to_snake(camel_str: str) -> str:
 class UUIDMixin(SQLModel):
     """Mixin class that adds a unique UUID field."""
 
-    uuid: _uuid.UUID = Field(
-        default_factory=_uuid.uuid4,
+    uuid: UUID = Field(
+        default_factory=uuid4,
         primary_key=True,
         index=True,
         nullable=False,

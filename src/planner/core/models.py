@@ -34,6 +34,8 @@ def camel_to_snake(camel_str: str) -> str:
 
 
 class UUIDMixin(SQLModel):
+    """Mixin class that adds a unique UUID field."""
+
     uuid: _uuid.UUID = Field(
         default_factory=_uuid.uuid4,
         primary_key=True,
@@ -44,6 +46,8 @@ class UUIDMixin(SQLModel):
 
 
 class TimeStampedMixin(SQLModel):
+    """Mixin class that adds created and modified timestamp fields."""
+
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         nullable=False,

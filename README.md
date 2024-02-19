@@ -61,7 +61,7 @@ Before the project setup, follow these steps for database setup:
     \q
     ```
 
-## Project Setup
+### Project Setup
 
 After the database setup, the following steps are followed to set up the project:
 

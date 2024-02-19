@@ -80,6 +80,11 @@ After the database setup, the following steps are followed to set up the project
     pdm install
     ```
 
+1. Install the pre-commit hooks for the repository:
+    ```bash
+    pre-commit install
+    ```
+
 1. Copy the `.env.example` file to `.env`:
     ```bash
     cp .env.example .env

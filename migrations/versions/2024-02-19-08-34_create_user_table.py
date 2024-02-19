@@ -1,8 +1,8 @@
 """Create user table
 
-Revision ID: fac4b3626011
+Revision ID: 63eae7195c76
 Revises: None (first migration)
-Create Date: 2024-02-18 21:24:53.257244
+Create Date: 2024-02-19 08:34:14.441442
 
 """
 from typing import Sequence
@@ -12,10 +12,12 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "fac4b3626011"
+revision: str = "63eae7195c76"
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
+
+sex_enum = sa.Enum("MALE", "FEMALE", name="sex")
 
 
 def upgrade() -> None:
@@ -35,8 +37,8 @@ def upgrade() -> None:
             "second_last_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True
         ),
         sa.Column("date_of_birth", sa.Date(), nullable=True),
-        sa.Column("sex", sa.Enum("MALE", "FEMALE", name="sex"), nullable=True),
-        sa.Column("email", sa.String(), nullable=False),
+        sa.Column("sex", sex_enum, nullable=True),
+        sa.Column("email", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column(
             "is_active", sa.Boolean(), server_default=sa.text("true"), nullable=False
@@ -65,4 +67,5 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_user_email"), table_name="user")
     op.drop_index(op.f("ix_user_uuid"), table_name="user")
     op.drop_table("user")
+    sex_enum.drop(op.get_bind())
     # ### end Alembic commands ###

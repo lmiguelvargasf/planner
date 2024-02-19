@@ -6,10 +6,11 @@ This project implements a to-do list using FastAPI.
 
 ### Prerequisites
 
-The following dependencies are expected to be installed on your machine:
+The following dependencies are expected to be installed:
 
 - [Python 3.12][python]
 - [PostgreSQL][postgresql]
+- [pre-commit][]
 - [PDM][pdm]
 
 #### MacOS Users
@@ -19,7 +20,7 @@ MacOS users are recommended to use [Homebrew][homebrew], a package manager that 
 Once Homebrew is installed, the project dependencies can be installed by running the following command in the terminal:
 
 ```bash
-brew install python3 postgresql pdm
+brew install python3 postgresql pre-commit pdm
 ```
 
 ### Database Setup
@@ -104,4 +105,5 @@ After the database setup, the following steps are followed to set up the project
 [postgres-linux]: https://askubuntu.com/questions/1206416/how-to-start-postgresql
 [postgres-windows]: https://stackoverflow.com/questions/36629963/how-can-i-start-postgresql-on-windows
 [postgresql]: https://www.postgresql.org/
+[pre-commit]: https://pre-commit.com/
 [python]: https://www.python.org/

@@ -9,11 +9,15 @@ from ..core.models import BaseModel
 
 
 class Sex(StrEnum):
+    """Enum to represent human biological sexes."""
+
     MALE = auto()
     FEMALE = auto()
 
 
 class User(BaseModel, table=True):
+    """Model representing a user."""
+
     first_name: str | None = Field(nullable=True)
     middle_name: str | None = Field(nullable=True)
     last_name: str | None = Field(nullable=True)

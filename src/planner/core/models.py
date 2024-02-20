@@ -2,7 +2,7 @@ from abc import ABC
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import text
+from sqlalchemy import TIMESTAMP, text
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.sql import func
 from sqlmodel import Field, SQLModel
@@ -27,17 +27,16 @@ class TimeStampedMixin(SQLModel):
 
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
+        sa_type=TIMESTAMP(timezone=True),
         nullable=False,
         sa_column_kwargs=dict(server_default=func.now()),
     )
 
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
+        sa_type=TIMESTAMP(timezone=True),
         nullable=False,
-        sa_column_kwargs=dict(
-            server_default=func.now(),
-            onupdate=func.now(),
-        ),
+        sa_column_kwargs=dict(server_default=func.now(), onupdate=func.now()),
     )
 
 

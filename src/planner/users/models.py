@@ -2,8 +2,8 @@ from datetime import date
 from enum import StrEnum, auto
 
 from pydantic import EmailStr, SecretStr
-from sqlalchemy import false, true
-from sqlmodel import AutoString, Column, Field
+from sqlalchemy import AutoString, false, true
+from sqlmodel import Field
 
 from ..core.models import BaseModel
 
@@ -24,12 +24,8 @@ class User(BaseModel, table=True):
     second_last_name: str | None = Field(nullable=True)
     date_of_birth: date | None = Field(nullable=True)
     sex: Sex | None = Field(nullable=True)
-    email: EmailStr = Field(
-        sa_column=Column(AutoString, unique=True, index=True, nullable=False)
-    )
-    hashed_password: SecretStr | None = Field(
-        sa_column=Column(AutoString, nullable=True)
-    )
+    email: EmailStr = Field(sa_type=AutoString, unique=True, index=True, nullable=False)
+    hashed_password: SecretStr | None = Field(sa_type=AutoString, nullable=True)
     is_active: bool = Field(
         default=True, nullable=False, sa_column_kwargs=dict(server_default=true())
     )

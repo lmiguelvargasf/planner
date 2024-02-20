@@ -2,10 +2,9 @@ from abc import ABC
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import TIMESTAMP, text
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.sql import func
-from sqlmodel import Field, SQLModel
+from sqlmodel import TIMESTAMP, Field, SQLModel, text
 
 from .utils import camel_to_snake
 

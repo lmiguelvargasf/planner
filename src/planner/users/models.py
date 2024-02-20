@@ -2,8 +2,7 @@ from datetime import date
 from enum import StrEnum, auto
 
 from pydantic import EmailStr, SecretStr
-from sqlalchemy import AutoString, false, true
-from sqlmodel import Field
+from sqlmodel import AutoString, Field, false, true
 
 from ..core.models import BaseModel
 

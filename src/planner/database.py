@@ -12,13 +12,15 @@ async_engine = create_async_engine(
 async_session = async_sessionmaker(bind=async_engine, expire_on_commit=False)
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+async def inject_db_session() -> AsyncGenerator[AsyncSession, None]:
     """
-    Obtain an asynchronous session for the database.
+    Provide a database session for asynchronous web applications, designed for
+    seamless integration with dependency injection systems. This function is
+    crafted for use with FastAPI's `Depends`, but it should also work well
+    with other async frameworks.
 
-    Returns:
-        An asynchronous generator yielding an `AsyncSession` instance.
-
+    Yields:
+        An async database session.
     """
     async with async_session() as session:
         yield session

@@ -13,6 +13,13 @@ async_engine = create_async_engine(
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """
+    Obtain an asynchronous session for the database.
+
+    Returns:
+        An asynchronous generator yielding an `AsyncSession` instance.
+
+    """
     async_session = sessionmaker(
         bind=async_engine, class_=AsyncSession, expire_on_commit=False
     )

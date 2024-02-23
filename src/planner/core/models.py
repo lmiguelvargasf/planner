@@ -15,8 +15,6 @@ class UUIDMixin(SQLModel):
     uuid: UUID = Field(
         default_factory=uuid4,
         primary_key=True,
-        index=True,
-        nullable=False,
         sa_column_kwargs=dict(server_default=text("gen_random_uuid()"), unique=True),
     )
 

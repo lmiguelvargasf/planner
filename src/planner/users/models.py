@@ -23,7 +23,7 @@ class User(BaseModel, table=True):
     second_last_name: str | None = Field(nullable=True)
     date_of_birth: date | None = Field(nullable=True)
     sex: Sex | None = Field(nullable=True)
-    email: EmailStr = Field(sa_type=AutoString, unique=True, index=True, nullable=False)
+    email: EmailStr = Field(sa_type=AutoString, unique=True, nullable=False)
     hashed_password: SecretStr | None = Field(sa_type=AutoString, nullable=True)
     is_active: bool = Field(
         default=True, nullable=False, sa_column_kwargs=dict(server_default=true())

@@ -2,7 +2,8 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.ext.asyncio.session import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio.session import async_sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .config import settings
 
@@ -10,7 +11,11 @@ async_engine = create_async_engine(
     url=settings.DATABASE_URL.unicode_string(),
     echo=True,
 )
-async_session = async_sessionmaker(bind=async_engine, expire_on_commit=False)
+async_session = async_sessionmaker(
+    bind=async_engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+)
 
 
 async def inject_db_session() -> AsyncGenerator[AsyncSession, None]:

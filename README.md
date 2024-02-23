@@ -56,6 +56,11 @@ Before the project setup, follow these steps for database setup:
     CREATE DATABASE planner OWNER postgres;
     ```
 
+1. Set the timezone of the database to UTC:
+    ```sql
+    ALTER DATABASE planner SET timezone TO 'UTC';
+    ```
+
 1. Exit the PostgreSQL shell:
     ```bash
     \q

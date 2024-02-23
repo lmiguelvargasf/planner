@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from uuid import UUID
 
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -14,3 +15,6 @@ class UserManager:
         await self.session.commit()
         await self.session.refresh(user)
         return user
+
+    async def get_by_uuid(self, *, uuid: UUID) -> User | None:
+        return await self.session.get(User, uuid)

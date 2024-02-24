@@ -2,7 +2,7 @@ from datetime import date
 from enum import StrEnum, auto
 
 from pydantic import EmailStr, SecretStr
-from sqlmodel import AutoString, Field, false, true
+from sqlmodel import AutoString, Field, SQLModel, false, true
 
 from ..core.models import BaseModel
 
@@ -35,16 +35,16 @@ class User(BaseModel, table=True):
     )
 
 
-class UserCreate(BaseModel):
-    """Model representing a user to be created."""
+class UserUpdate(SQLModel):
+    """Model representing a user to be updated."""
 
-    first_name: str | None = Field(nullable=True, default=None)
-    middle_name: str | None = Field(nullable=True, default=None)
-    last_name: str | None = Field(nullable=True, default=None)
-    second_last_name: str | None = Field(nullable=True, default=None)
-    date_of_birth: date | None = Field(nullable=True, default=None)
-    sex: Sex | None = Field(nullable=True, default=None)
-    email: EmailStr = Field(sa_type=AutoString, unique=True, nullable=False)
-    hashed_password: SecretStr | None = Field(
-        sa_type=AutoString, nullable=True, default=None
-    )
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
+    second_last_name: str | None = None
+    date_of_birth: date | None = None
+    sex: Sex | None = None
+    email: EmailStr | None = None
+    hashed_password: SecretStr | None = None
+    is_active: bool | None = None
+    is_superuser: bool | None = None

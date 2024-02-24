@@ -42,17 +42,20 @@ class BaseUser(SQLModel):
     second_last_name: str | None = None
     date_of_birth: date | None = None
     sex: Sex | None = None
-    email: EmailStr | None = None
     hashed_password: SecretStr | None = None
-    is_active: bool | None = None
-    is_superuser: bool | None = None
 
 
 class UserCreate(BaseUser):
     """Model representing a user to be created."""
 
     email: EmailStr
+    is_active: bool = True
+    is_superuser: bool = False
 
 
 class UserUpdate(BaseUser):
     """Model representing a user to be updated."""
+
+    email: EmailStr | None = None
+    is_active: bool | None = None
+    is_superuser: bool | None = None

@@ -35,6 +35,21 @@ class User(BaseModel, table=True):
     )
 
 
+class UserCreate(SQLModel):
+    """Model representing a user to be created."""
+
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
+    second_last_name: str | None = None
+    date_of_birth: date | None = None
+    sex: Sex | None = None
+    email: EmailStr
+    hashed_password: SecretStr | None = None
+    is_active: bool | None = None
+    is_superuser: bool | None = None
+
+
 class UserUpdate(SQLModel):
     """Model representing a user to be updated."""
 

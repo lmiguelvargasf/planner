@@ -33,3 +33,18 @@ class User(BaseModel, table=True):
     is_superuser: bool = Field(
         default=False, nullable=False, sa_column_kwargs=dict(server_default=false())
     )
+
+
+class UserCreate(BaseModel):
+    """Model representing a user to be created."""
+
+    first_name: str | None = Field(nullable=True, default=None)
+    middle_name: str | None = Field(nullable=True, default=None)
+    last_name: str | None = Field(nullable=True, default=None)
+    second_last_name: str | None = Field(nullable=True, default=None)
+    date_of_birth: date | None = Field(nullable=True, default=None)
+    sex: Sex | None = Field(nullable=True, default=None)
+    email: EmailStr = Field(sa_type=AutoString, unique=True, nullable=False)
+    hashed_password: SecretStr | None = Field(
+        sa_type=AutoString, nullable=True, default=None
+    )

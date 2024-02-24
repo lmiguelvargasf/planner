@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
+from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .models import User, UserUpdate
@@ -18,6 +19,12 @@ class UserManager:
 
     async def get_by_uuid(self, *, uuid: UUID) -> User:
         return await self.session.get_one(User, uuid)
+
+    async def get_by_email(self, *, email: str) -> User:
+        query = select(User).where(User.email == email)
+        result = await self.session.exec(query)
+        db_user = result.one()
+        return db_user
 
     async def patch(self, *, uuid: UUID, user: UserUpdate) -> User:
         db_user = await self.get_by_uuid(uuid=uuid)

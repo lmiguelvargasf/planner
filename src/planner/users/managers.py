@@ -16,7 +16,7 @@ class UserManager:
         await self.session.refresh(user)
         return user
 
-    async def get_by_uuid(self, *, uuid: UUID) -> User | None:
+    async def get_by_uuid(self, *, uuid: UUID) -> User:
         return await self.session.get_one(User, uuid)
 
     async def patch(self, *, uuid: UUID, user: UserUpdate) -> User:

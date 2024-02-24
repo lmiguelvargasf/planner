@@ -17,14 +17,16 @@ class Sex(StrEnum):
 class User(BaseModel, table=True):
     """Model representing a user."""
 
-    first_name: str | None = Field(nullable=True)
-    middle_name: str | None = Field(nullable=True)
-    last_name: str | None = Field(nullable=True)
-    second_last_name: str | None = Field(nullable=True)
-    date_of_birth: date | None = Field(nullable=True)
-    sex: Sex | None = Field(nullable=True)
+    first_name: str | None = Field(nullable=True, default=None)
+    middle_name: str | None = Field(nullable=True, default=None)
+    last_name: str | None = Field(nullable=True, default=None)
+    second_last_name: str | None = Field(nullable=True, default=None)
+    date_of_birth: date | None = Field(nullable=True, default=None)
+    sex: Sex | None = Field(nullable=True, default=None)
     email: EmailStr = Field(sa_type=AutoString, unique=True, nullable=False)
-    hashed_password: SecretStr | None = Field(sa_type=AutoString, nullable=True)
+    hashed_password: SecretStr | None = Field(
+        sa_type=AutoString, nullable=True, default=None
+    )
     is_active: bool = Field(
         default=True, nullable=False, sa_column_kwargs=dict(server_default=true())
     )

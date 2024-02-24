@@ -1,8 +1,8 @@
 """Create user table
 
-Revision ID: dba090eb9b8b
+Revision ID: 64d5792bda80
 Revises: None (first migration)
-Create Date: 2024-02-23 08:46:11.490526
+Create Date: 2024-02-23 20:07:32.836670
 
 """
 from typing import Sequence
@@ -12,7 +12,7 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "dba090eb9b8b"
+revision: str = "64d5792bda80"
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -49,7 +49,6 @@ def upgrade() -> None:
             server_default=sa.text("false"),
             nullable=False,
         ),
-        sa.PrimaryKeyConstraint("uuid"),
         sa.Column(
             "created_at",
             sa.TIMESTAMP(timezone=True),
@@ -62,8 +61,8 @@ def upgrade() -> None:
             server_default=sa.text("now()"),
             nullable=False,
         ),
+        sa.PrimaryKeyConstraint("uuid"),
         sa.UniqueConstraint("email"),
-        sa.UniqueConstraint("uuid"),
     )
     # ### end Alembic commands ###
 

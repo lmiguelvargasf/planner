@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .models import User, UserUpdate
@@ -18,10 +17,10 @@ class UserManager:
         return user
 
     async def get_by_uuid(self, *, uuid: UUID) -> User | None:
-        return await self.session.get(User, uuid)
+        return await self.session.get_one(User, uuid)
 
     async def patch(self, *, uuid: UUID, user: UserUpdate) -> User:
-        db_user = await self._get_by_uuid(uuid)
+        db_user = await self.get_by_uuid(uuid=uuid)
         dumped_user = user.model_dump(exclude_unset=True)
         db_user.sqlmodel_update(dumped_user)
         self.session.add(db_user)
@@ -30,12 +29,6 @@ class UserManager:
         return db_user
 
     async def delete(self, *, uuid: UUID) -> None:
-        db_user = await self._get_by_uuid(uuid)
+        db_user = await self.get_by_uuid(uuid=uuid)
         await self.session.delete(db_user)
         await self.session.commit()
-
-    async def _get_by_uuid(self, uuid: UUID) -> User:
-        query = select(User).where(User.uuid == uuid)
-        result = await self.session.exec(query)
-        db_user = result.one()
-        return db_user

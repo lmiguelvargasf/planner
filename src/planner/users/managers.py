@@ -29,6 +29,11 @@ class UserManager:
         await self.session.refresh(db_user)
         return db_user
 
+    async def delete(self, *, uuid: UUID) -> None:
+        db_user = await self._get_by_uuid(uuid)
+        await self.session.delete(db_user)
+        await self.session.commit()
+
     async def _get_by_uuid(self, uuid: UUID) -> User:
         query = select(User).where(User.uuid == uuid)
         result = await self.session.exec(query)

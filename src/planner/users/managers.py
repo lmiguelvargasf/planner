@@ -22,8 +22,7 @@ class UserManager:
 
     async def update(self, *, uuid: UUID, user: User) -> User:
         db_user = await self._get_by_uuid(uuid)
-        dumped_user = db_user.model_dump() | user.model_dump()
-        db_user.sqlmodel_update(dumped_user)
+        db_user.sqlmodel_update(user)
         self.session.add(db_user)
         await self.session.commit()
         await self.session.refresh(db_user)

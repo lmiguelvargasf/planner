@@ -24,6 +24,7 @@ lab = "dotenv run jupyter lab --notebook-dir=./notebooks"
 [tool.pdm.dev-dependencies]
 test = [
     "pytest>=8.0.1",
+    "pytest-asyncio>=0.23.5",
 ]
 lint = [
     "ruff>=0.2.2",
@@ -40,6 +41,8 @@ config = [
 testpaths = [
     "tests",
 ]
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+asyncio_mode = "auto"
 
 [tool.ruff]
 select = [

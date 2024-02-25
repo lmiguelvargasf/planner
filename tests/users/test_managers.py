@@ -1,6 +1,7 @@
 import pytest
 from planner.users.managers import UserManager
 from planner.users.models import Sex, User, UserCreate
+from sqlalchemy.exc import IntegrityError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 
@@ -57,3 +58,20 @@ async def test_user_creation_full_data(session: AsyncSession):
     assert db_user.is_superuser == validated_user.is_superuser
     assert db_user.created_at == validated_user.created_at
     assert db_user.updated_at == validated_user.updated_at
+
+
+@pytest.mark.asyncio
+async def test_create_user_with_unique_email(session: AsyncSession):
+    email = "user@example.com"
+    manager = UserManager(session)
+    user = UserCreate(email=email)
+    validated_user = User.model_validate(user)
+    # create user
+    await manager.create(validated_user)
+
+    # create another user with same email
+    another_user = UserCreate(email=email)
+    validated_user = User.model_validate(another_user)
+
+    with pytest.raises(IntegrityError, match="unique constraint"):
+        await manager.create(validated_user)

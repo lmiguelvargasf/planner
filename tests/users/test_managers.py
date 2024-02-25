@@ -100,22 +100,24 @@ async def test_get_user_by_email_not_found(user_manager):
 
 
 @pytest.mark.asyncio
-async def test_patch_user(user_manager, db_complete_user):
+async def test_patch_user(user_manager, db_complete_user: User):
+    user_before_update = db_complete_user.model_copy()
     user = UserUpdate(first_name="Sam", last_name="Johnson")
-
     updated_user = await user_manager.patch(uuid=db_complete_user.uuid, user=user)
 
-    assert updated_user.uuid == db_complete_user.uuid
+    assert updated_user.uuid == user_before_update.uuid
     assert updated_user.first_name == "Sam"
-    assert updated_user.middle_name == db_complete_user.middle_name
+    assert updated_user.middle_name == user_before_update.middle_name
     assert updated_user.last_name == "Johnson"
-    assert updated_user.second_last_name == db_complete_user.second_last_name
-    assert updated_user.date_of_birth == db_complete_user.date_of_birth
-    assert updated_user.sex == db_complete_user.sex
-    assert updated_user.email == db_complete_user.email
-    assert updated_user.hashed_password == db_complete_user.hashed_password
-    assert updated_user.is_active == db_complete_user.is_active
-    assert updated_user.is_superuser == db_complete_user.is_superuser
+    assert updated_user.second_last_name == user_before_update.second_last_name
+    assert updated_user.date_of_birth == user_before_update.date_of_birth
+    assert updated_user.sex == user_before_update.sex
+    assert updated_user.email == user_before_update.email
+    assert updated_user.hashed_password == user_before_update.hashed_password
+    assert updated_user.is_active == user_before_update.is_active
+    assert updated_user.is_superuser == user_before_update.is_superuser
+    assert updated_user.created_at == user_before_update.created_at
+    assert updated_user.updated_at > user_before_update.updated_at
 
 
 @pytest.mark.asyncio

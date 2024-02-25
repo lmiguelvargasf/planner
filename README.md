@@ -51,14 +51,17 @@ Before the project setup, follow these steps for database setup:
     ALTER USER postgres WITH PASSWORD 'postgres';
     ```
 
-1. Create a new database named `planner` owned by the `postgres` user:
+1. Create two databases named `planner` and `planner_test` owned by the `postgres` user:
     ```sql
     CREATE DATABASE planner OWNER postgres;
+    CREATE DATABASE planner_test OWNER postgres;
     ```
+    `planner` is used for the main application, while `planner_test` is used for running tests.
 
-1. Set the timezone of the database to UTC:
+1. Set the timezone of the databases to UTC:
     ```sql
     ALTER DATABASE planner SET timezone TO 'UTC';
+    ALTER DATABASE planner_test SET timezone TO 'UTC';
     ```
 
 1. Exit the PostgreSQL shell:

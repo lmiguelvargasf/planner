@@ -24,7 +24,7 @@ def validated_complete_user():
         second_last_name="Johnson",
         date_of_birth="1990-01-01",
         sex=Sex.MALE,
-        email="user@example.com",
+        email=EMAIL,
         hashed_password=("password"),
         is_active=False,
         is_superuser=True,
@@ -82,17 +82,11 @@ async def test_user_creation_full_data(db_complete_user, validated_complete_user
 
 
 @pytest.mark.asyncio
-async def test_create_user_with_unique_email(session: AsyncSession):
-    email = "user@example.com"
-    manager = UserManager(session)
-    user = UserCreate(email=email)
-    validated_user = User.model_validate(user)
-    # create user
-    await manager.create(validated_user)
-
+async def test_create_user_with_unique_email(session: AsyncSession, db_basic_user):
     # create another user with same email
-    another_user = UserCreate(email=email)
+    another_user = UserCreate(email=EMAIL)
     validated_user = User.model_validate(another_user)
+    manager = UserManager(session)
 
     with pytest.raises(IntegrityError, match="unique constraint"):
         await manager.create(validated_user)

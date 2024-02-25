@@ -1,7 +1,7 @@
 from datetime import date
 from enum import StrEnum, auto
 
-from pydantic import EmailStr, SecretStr
+from pydantic import EmailStr
 from sqlmodel import AutoString, Field, SQLModel, false, true
 
 from ..core.models import BaseModel
@@ -24,9 +24,7 @@ class User(BaseModel, table=True):
     date_of_birth: date | None = Field(nullable=True, default=None)
     sex: Sex | None = Field(nullable=True, default=None)
     email: EmailStr = Field(sa_type=AutoString, unique=True, nullable=False)
-    hashed_password: SecretStr | None = Field(
-        sa_type=AutoString, nullable=True, default=None
-    )
+    hashed_password: str | None = Field(nullable=True, default=None)
     is_active: bool = Field(
         default=True, nullable=False, sa_column_kwargs=dict(server_default=true())
     )
@@ -42,7 +40,7 @@ class BaseUser(SQLModel):
     second_last_name: str | None = None
     date_of_birth: date | None = None
     sex: Sex | None = None
-    hashed_password: SecretStr | None = None
+    hashed_password: str | None = None
 
 
 class UserCreate(BaseUser):

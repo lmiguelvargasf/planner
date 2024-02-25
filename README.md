@@ -113,6 +113,24 @@ After the database setup, the following steps are followed to set up the project
     {"status": "up"}
     ```
 
+## Testing
+
+[`pytest`][pytest] is used for testing.
+
+### Plugins
+
+To enhance the testing capabilities, the following plugins are integrated with `pytest`:
+
+- [`pytest-asyncio`][pytest-asyncio] - to facilitate testing of code that uses the `asyncio` library.
+
+### Running Tests
+
+Execute the following command to run the tests:
+
+```bash
+pdm run test
+```
+
 ## Jupyter Notebook Usage
 
 It is encouraged the use of Jupyter notebooks for data analysis and exploration
@@ -150,4 +168,6 @@ Executing either command starts the JupyterLab server, enabling access to notebo
 [postgres-windows]: https://stackoverflow.com/questions/36629963/how-can-i-start-postgresql-on-windows
 [postgresql]: https://www.postgresql.org/
 [pre-commit]: https://pre-commit.com/
+[pytest]: https://docs.pytest.org/
+[pytest-asyncio]: https://github.com/pytest-dev/pytest-asyncio
 [python]: https://www.python.org/

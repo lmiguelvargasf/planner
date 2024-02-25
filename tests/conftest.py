@@ -5,6 +5,14 @@ from planner.database import async_engine, async_session
 
 @pytest_asyncio.fixture(scope="function")
 async def session():
+    """
+    Create and tear down an asyncrhonous database session.
+
+    First, it establishes a connection to the database and creates all tables
+    defined in the BaseModel's metadata. Second, it yields a session that tests
+    can use to interact with the database. Finally, once a test completes, it
+    drops all tables from the database and disposes the engine.
+    """
     async with async_engine.begin() as conn:
         await conn.run_sync(BaseModel.metadata.create_all)
 

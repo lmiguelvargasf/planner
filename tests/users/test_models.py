@@ -82,6 +82,6 @@ def test_user_creation_full_data():
     assert db_user.date_of_birth == date(1980, 5, 20)
     assert db_user.sex == Sex.MALE
     assert db_user.email == "john.smith@example.com"
-    assert db_user.hashed_password.get_secret_value() == "password"
+    assert db_user.hashed_password == "password"
     assert db_user.is_active is False
     assert db_user.is_superuser is True

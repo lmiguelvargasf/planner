@@ -8,6 +8,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 EMAIL = "user@example.com"
 FIRST_NAME = "John"
 LAST_NAME = "Smith"
+UUID_NOT_IN_DB = "00000000-0000-0000-0000-000000000000"
 
 
 @pytest.fixture
@@ -81,10 +82,8 @@ async def test_get_user_by_uuid(user_manager, db_basic_user):
 
 @pytest.mark.asyncio
 async def test_get_user_by_uuid_not_found(user_manager):
-    uuid = "00000000-0000-0000-0000-000000000000"
-
     with pytest.raises(NoResultFound, match="No row was found"):
-        await user_manager.get_by_uuid(uuid=uuid)
+        await user_manager.get_by_uuid(uuid=UUID_NOT_IN_DB)
 
 
 @pytest.mark.asyncio
@@ -146,10 +145,9 @@ async def test_patch_user_with_unique_email(user_manager, db_basic_user):
 @pytest.mark.asyncio
 async def test_patch_user_not_found(user_manager):
     user = UserUpdate(first_name=FIRST_NAME, last_name=LAST_NAME)
-    uuid = "00000000-0000-0000-0000-000000000000"
 
     with pytest.raises(NoResultFound, match="No row was found"):
-        await user_manager.patch(uuid=uuid, user=user)
+        await user_manager.patch(uuid=UUID_NOT_IN_DB, user=user)
 
 
 @pytest.mark.asyncio
@@ -162,7 +160,5 @@ async def test_delete_user(db_basic_user, user_manager):
 
 @pytest.mark.asyncio
 async def test_delete_user_not_found(user_manager):
-    uuid = "00000000-0000-0000-0000-000000000000"
-
     with pytest.raises(NoResultFound, match="No row was found"):
-        await user_manager.delete(uuid=uuid)
+        await user_manager.delete(uuid=UUID_NOT_IN_DB)

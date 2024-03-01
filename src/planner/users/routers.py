@@ -61,3 +61,13 @@ async def patch_user(
 ) -> UserRead:
     db_user = await user_manager.patch(uuid=user_uuid, user=user)
     return db_user
+
+
+@router.delete(
+    "/{user_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_user(
+    user_uuid: UUID, user_manager: UserManager = Depends(get_user_manager)
+) -> None:
+    await user_manager.delete(uuid=user_uuid)

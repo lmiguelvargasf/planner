@@ -1,5 +1,6 @@
-from datetime import date
+from datetime import date, datetime
 from enum import StrEnum, auto
+from uuid import UUID
 
 from pydantic import EmailStr
 from sqlmodel import AutoString, Field, SQLModel, false, true
@@ -40,13 +41,24 @@ class BaseUser(SQLModel):
     second_last_name: str | None = None
     date_of_birth: date | None = None
     sex: Sex | None = None
-    hashed_password: str | None = None
+
+
+class UserRead(BaseUser):
+    """Model representing a user to be read."""
+
+    uuid: UUID
+    email: EmailStr
+    is_active: bool
+    is_superuser: bool
+    created_at: datetime
+    updated_at: datetime
 
 
 class UserCreate(BaseUser):
     """Model representing a user to be created."""
 
     email: EmailStr
+    hashed_password: str | None = None
     is_active: bool = True
     is_superuser: bool = False
 

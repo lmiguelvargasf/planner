@@ -54,7 +54,7 @@ async def read_user_by_email(
     status_code=status.HTTP_200_OK,
     response_model_exclude_none=True,
 )
-async def update_user(
+async def patch_user(
     user_uuid: UUID,
     user: UserUpdate,
     user_manager: UserManager = Depends(get_user_manager),

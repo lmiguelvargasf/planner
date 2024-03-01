@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from .dependencies import get_user_manager
 from .managers import UserManager
-from .models import User, UserCreate, UserRead
+from .models import User, UserCreate, UserRead, UserUpdate
 
 router = APIRouter(
     prefix="/users",
@@ -46,4 +46,18 @@ async def read_user_by_email(
     email: str, user_manager: UserManager = Depends(get_user_manager)
 ) -> UserRead:
     db_user = await user_manager.get_by_email(email=email)
+    return db_user
+
+
+@router.patch(
+    "/{user_uuid}",
+    status_code=status.HTTP_200_OK,
+    response_model_exclude_none=True,
+)
+async def update_user(
+    user_uuid: UUID,
+    user: UserUpdate,
+    user_manager: UserManager = Depends(get_user_manager),
+) -> UserRead:
+    db_user = await user_manager.patch(uuid=user_uuid, user=user)
     return db_user

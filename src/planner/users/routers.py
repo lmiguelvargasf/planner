@@ -15,7 +15,6 @@ router = APIRouter(
 @router.post(
     "/",
     status_code=status.HTTP_201_CREATED,
-    response_model_exclude_none=True,
 )
 async def create_user(
     user: UserCreate, user_manager: UserManager = Depends(get_user_manager)
@@ -28,7 +27,6 @@ async def create_user(
 @router.get(
     "/{user_uuid}",
     status_code=status.HTTP_200_OK,
-    response_model_exclude_none=True,
 )
 async def read_user_by_uuid(
     user_uuid: UUID, user_manager: UserManager = Depends(get_user_manager)
@@ -40,7 +38,6 @@ async def read_user_by_uuid(
 @router.get(
     "/email/{email}",
     status_code=status.HTTP_200_OK,
-    response_model_exclude_none=True,
 )
 async def read_user_by_email(
     email: str, user_manager: UserManager = Depends(get_user_manager)
@@ -52,7 +49,6 @@ async def read_user_by_email(
 @router.patch(
     "/{user_uuid}",
     status_code=status.HTTP_200_OK,
-    response_model_exclude_none=True,
 )
 async def patch_user(
     user_uuid: UUID,

@@ -34,7 +34,12 @@ class UserManager:
     async def get_by_email(self, *, email: str) -> User:
         query = select(User).where(User.email == email)
         result = await self.session.exec(query)
-        db_user = result.one()
+        try:
+            db_user = result.one()
+        except NoResultFound as error:
+            raise UserError(
+                message=UserErrorMessage.NOT_FOUND_BY_EMAIL.value
+            ) from error
         return db_user
 
     async def patch(self, *, uuid: UUID, user: UserUpdate) -> User:

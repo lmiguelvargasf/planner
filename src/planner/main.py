@@ -1,3 +1,5 @@
+import dataclasses
+
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
@@ -12,7 +14,7 @@ app.include_router(users_router)
 async def base_error_handler(request: Request, error: BaseError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
-        content={"message": error.message},
+        content=dataclasses.asdict(error),
     )
 
 

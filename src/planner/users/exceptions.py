@@ -6,6 +6,7 @@ from ..core.exceptions import BaseError
 
 class UserErrorMessage(Enum):
     DUPLICATE_EMAIL = "A user with this email already exists."
+    NOT_FOUND_BY_UUID = "The user for the provided UUID does not exist."
 
 
 @dataclass

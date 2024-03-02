@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -24,7 +24,12 @@ class UserManager:
         return user
 
     async def get_by_uuid(self, *, uuid: UUID) -> User:
-        return await self.session.get_one(User, uuid)
+        try:
+            db_user = await self.session.get_one(User, uuid)
+        except NoResultFound as error:
+            raise UserError(message=UserErrorMessage.NOT_FOUND_BY_UUID.value) from error
+
+        return db_user
 
     async def get_by_email(self, *, email: str) -> User:
         query = select(User).where(User.email == email)

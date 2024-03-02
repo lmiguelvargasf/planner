@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from uuid import UUID
 
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from .exceptions import UserError, UserErrorMessage
 from .models import User, UserUpdate
 
 
@@ -13,7 +15,11 @@ class UserManager:
 
     async def create(self, user: User) -> User:
         self.session.add(user)
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError as error:
+            raise UserError(message=UserErrorMessage.DUPLICATE_EMAIL.value) from error
+
         await self.session.refresh(user)
         return user
 

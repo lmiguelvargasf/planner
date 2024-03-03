@@ -10,6 +10,18 @@ FIRST_NAME = "John"
 LAST_NAME = "Smith"
 UUID_NOT_IN_DB = "00000000-0000-0000-0000-000000000000"
 BASIC_USER_CREATE = UserCreate(email=EMAIL)
+COMPLETE_USER_CREATE = UserCreate(
+    first_name=FIRST_NAME,
+    middle_name="Doe",
+    last_name=LAST_NAME,
+    second_last_name="Johnson",
+    date_of_birth="1990-01-01",
+    sex=Sex.MALE,
+    email=EMAIL,
+    hashed_password=("password"),
+    is_active=False,
+    is_superuser=True,
+)
 
 
 @pytest.fixture
@@ -26,19 +38,7 @@ def validated_basic_user():
 
 @pytest.fixture
 def validated_complete_user():
-    user = UserCreate(
-        first_name=FIRST_NAME,
-        middle_name="Doe",
-        last_name=LAST_NAME,
-        second_last_name="Johnson",
-        date_of_birth="1990-01-01",
-        sex=Sex.MALE,
-        email=EMAIL,
-        hashed_password=("password"),
-        is_active=False,
-        is_superuser=True,
-    )
-    validated_user = User.model_validate(user)
+    validated_user = User.model_validate(COMPLETE_USER_CREATE)
     return validated_user
 
 
@@ -64,7 +64,9 @@ async def test_user_creation_required_fields(
 
 
 @pytest.mark.asyncio
-async def test_user_creation_full_data(db_complete_user, validated_complete_user):
+async def test_user_creation_full_data(validated_complete_user, user_manager, mocker):
+    mocker.patch.object(User, "model_validate", return_value=validated_complete_user)
+    db_complete_user = await user_manager.create(COMPLETE_USER_CREATE)
     assert db_complete_user == validated_complete_user
 
 

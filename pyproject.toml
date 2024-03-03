@@ -19,7 +19,7 @@ license = {text = "MIT"}
 [tool.pdm.scripts]
 start = "dotenv run uvicorn planner.main:app"
 lab = "dotenv run jupyter lab --notebook-dir=./notebooks"
-test.cmd = "dotenv run pytest tests"
+test.cmd = "dotenv run pytest {args:tests}"
 test.env = {USE_TEST_DB = "true"}
 
 [tool.pdm.dev-dependencies]

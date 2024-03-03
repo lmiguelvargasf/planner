@@ -1,33 +1,36 @@
 from dataclasses import dataclass
 from uuid import UUID
 
+from asyncpg.exceptions import NotNullViolationError, UniqueViolationError
 from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .exceptions import UserError, UserErrorMessage
-from .models import User, UserUpdate
+from .models import User, UserCreate, UserUpdate
 
 
 @dataclass(repr=False, eq=False)
 class UserManager:
     session: AsyncSession
 
-    async def create(self, user: User) -> User:
-        self.session.add(user)
+    async def create(self, user: UserCreate) -> User:
+        db_user = User.model_validate(user)
+        self.session.add(db_user)
+
         try:
             await self.session.commit()
         except IntegrityError as error:
-            raise UserError(message=UserErrorMessage.DUPLICATE_EMAIL.value) from error
+            self._handle_integrity_error(error)
 
-        await self.session.refresh(user)
-        return user
+        await self.session.refresh(db_user)
+        return db_user
 
     async def get_by_uuid(self, *, uuid: UUID) -> User:
         try:
             db_user = await self.session.get_one(User, uuid)
         except NoResultFound as error:
-            raise UserError(message=UserErrorMessage.NOT_FOUND_BY_UUID.value) from error
+            raise UserError(message=UserErrorMessage.NOT_FOUND_BY_UUID) from error
 
         return db_user
 
@@ -37,9 +40,7 @@ class UserManager:
         try:
             db_user = result.one()
         except NoResultFound as error:
-            raise UserError(
-                message=UserErrorMessage.NOT_FOUND_BY_EMAIL.value
-            ) from error
+            raise UserError(message=UserErrorMessage.NOT_FOUND_BY_EMAIL) from error
         return db_user
 
     async def patch(self, *, uuid: UUID, user: UserUpdate) -> User:
@@ -47,7 +48,10 @@ class UserManager:
         dumped_user = user.model_dump(exclude_unset=True)
         db_user.sqlmodel_update(dumped_user)
         self.session.add(db_user)
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError as error:
+            self._handle_integrity_error(error)
         await self.session.refresh(db_user)
         return db_user
 
@@ -55,3 +59,12 @@ class UserManager:
         db_user = await self.get_by_uuid(uuid=uuid)
         await self.session.delete(db_user)
         await self.session.commit()
+
+    def _handle_integrity_error(self, error: IntegrityError) -> None:
+        match error.orig.sqlstate:
+            case NotNullViolationError.sqlstate:
+                raise UserError(message=UserErrorMessage.EMAIL_REQUIRED) from error
+            case UniqueViolationError.sqlstate:
+                raise UserError(message=UserErrorMessage.DUPLICATE_EMAIL) from error
+            case _:
+                raise error from error

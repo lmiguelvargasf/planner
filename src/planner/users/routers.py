@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from .dependencies import get_user_manager
 from .managers import UserManager
-from .models import User, UserCreate, UserRead, UserUpdate
+from .models import UserCreate, UserRead, UserUpdate
 
 router = APIRouter(
     prefix="/users",
@@ -19,8 +19,7 @@ router = APIRouter(
 async def create_user(
     user: UserCreate, user_manager: UserManager = Depends(get_user_manager)
 ) -> UserRead:
-    validated_user = User.model_validate(user)
-    db_user = await user_manager.create(validated_user)
+    db_user = await user_manager.create(user)
     return db_user
 
 

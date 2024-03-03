@@ -18,7 +18,7 @@ COMPLETE_USER_CREATE = UserCreate(
     date_of_birth="1990-01-01",
     sex=Sex.MALE,
     email=EMAIL,
-    hashed_password=("password"),
+    hashed_password="password",
     is_active=False,
     is_superuser=True,
 )

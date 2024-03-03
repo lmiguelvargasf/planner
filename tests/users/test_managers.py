@@ -76,8 +76,10 @@ async def test_get_user_by_uuid(user_manager, db_basic_user):
 
 @pytest.mark.asyncio
 async def test_get_user_by_uuid_not_found(user_manager):
-    with pytest.raises(NoResultFound, match="No row was found"):
+    with pytest.raises(UserError) as error:
         await user_manager.get_by_uuid(uuid=UUID_NOT_IN_DB)
+
+    assert error.value.message == UserErrorMessage.NOT_FOUND_BY_UUID
 
 
 @pytest.mark.asyncio
@@ -88,8 +90,10 @@ async def test_get_user_by_email(user_manager, db_basic_user):
 
 @pytest.mark.asyncio
 async def test_get_user_by_email_not_found(user_manager):
-    with pytest.raises(NoResultFound, match="No row was found"):
+    with pytest.raises(UserError) as error:
         await user_manager.get_by_email(email=EMAIL)
+
+    assert error.value.message == UserErrorMessage.NOT_FOUND_BY_EMAIL
 
 
 @pytest.mark.asyncio

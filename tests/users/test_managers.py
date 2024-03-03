@@ -9,7 +9,7 @@ EMAIL = "user@example.com"
 FIRST_NAME = "John"
 LAST_NAME = "Smith"
 UUID_NOT_IN_DB = "00000000-0000-0000-0000-000000000000"
-USER_CREATE = UserCreate(email=EMAIL)
+BASIC_USER_CREATE = UserCreate(email=EMAIL)
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def user_manager(session: AsyncSession):
 
 @pytest.fixture
 def validated_basic_user():
-    validated_user = User.model_validate(USER_CREATE)
+    validated_user = User.model_validate(BASIC_USER_CREATE)
     return validated_user
 
 
@@ -59,7 +59,7 @@ async def test_user_creation_required_fields(
     validated_basic_user, user_manager, mocker
 ):
     mocker.patch.object(User, "model_validate", return_value=validated_basic_user)
-    db_user = await user_manager.create(USER_CREATE)
+    db_user = await user_manager.create(BASIC_USER_CREATE)
     assert db_user == validated_basic_user
 
 

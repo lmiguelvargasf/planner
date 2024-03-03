@@ -31,44 +31,32 @@ def user_manager(session: AsyncSession):
     return manager
 
 
-@pytest.fixture
-def validated_basic_user():
-    validated_user = User.model_validate(BASIC_USER_CREATE)
-    return validated_user
-
-
-@pytest.fixture
-def validated_complete_user():
-    validated_user = User.model_validate(COMPLETE_USER_CREATE)
-    return validated_user
-
-
 @pytest_asyncio.fixture
-async def db_basic_user(validated_basic_user, user_manager):
-    db_user = await user_manager.create(validated_basic_user)
-    return db_user
-
-
-@pytest_asyncio.fixture
-async def db_complete_user(validated_complete_user, user_manager):
-    db_user = await user_manager.create(validated_complete_user)
-    return db_user
-
-
-@pytest.mark.asyncio
-async def test_user_creation_required_fields(
-    validated_basic_user, user_manager, mocker
-):
-    mocker.patch.object(User, "model_validate", return_value=validated_basic_user)
+async def db_basic_user(user_manager):
     db_user = await user_manager.create(BASIC_USER_CREATE)
-    assert db_user == validated_basic_user
+    return db_user
+
+
+@pytest_asyncio.fixture
+async def db_complete_user(user_manager):
+    db_user = await user_manager.create(COMPLETE_USER_CREATE)
+    return db_user
 
 
 @pytest.mark.asyncio
-async def test_user_creation_full_data(validated_complete_user, user_manager, mocker):
-    mocker.patch.object(User, "model_validate", return_value=validated_complete_user)
-    db_complete_user = await user_manager.create(COMPLETE_USER_CREATE)
-    assert db_complete_user == validated_complete_user
+async def test_user_creation_required_fields(user_manager, mocker):
+    validated_user = User.model_validate(BASIC_USER_CREATE)
+    mocker.patch.object(User, "model_validate", return_value=validated_user)
+    db_user = await user_manager.create(BASIC_USER_CREATE)
+    assert db_user == validated_user
+
+
+@pytest.mark.asyncio
+async def test_user_creation_full_data(user_manager, mocker):
+    validated_user = User.model_validate(COMPLETE_USER_CREATE)
+    mocker.patch.object(User, "model_validate", return_value=validated_user)
+    db_user = await user_manager.create(COMPLETE_USER_CREATE)
+    assert db_user == validated_user
 
 
 @pytest.mark.asyncio

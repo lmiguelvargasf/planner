@@ -22,6 +22,7 @@ COMPLETE_USER_CREATE = UserCreate(
     is_active=False,
     is_superuser=True,
 )
+pytestmark = pytest.mark.asyncio
 
 
 @pytest.fixture
@@ -42,7 +43,6 @@ async def db_complete_user(user_manager):
     return db_user
 
 
-@pytest.mark.asyncio
 async def test_user_creation_required_fields(user_manager, mocker):
     validated_user = User.model_validate(BASIC_USER_CREATE)
     mocker.patch.object(User, "model_validate", return_value=validated_user)
@@ -50,7 +50,6 @@ async def test_user_creation_required_fields(user_manager, mocker):
     assert db_user == validated_user
 
 
-@pytest.mark.asyncio
 async def test_user_creation_full_data(user_manager, mocker):
     validated_user = User.model_validate(COMPLETE_USER_CREATE)
     mocker.patch.object(User, "model_validate", return_value=validated_user)
@@ -58,37 +57,31 @@ async def test_user_creation_full_data(user_manager, mocker):
     assert db_user == validated_user
 
 
-@pytest.mark.asyncio
 async def test_create_user_with_unique_email(db_basic_user, user_manager):
     with pytest.raises(UserError, match=UserErrorMessage.DUPLICATE_EMAIL):
         await user_manager.create(BASIC_USER_CREATE)
 
 
-@pytest.mark.asyncio
 async def test_get_user_by_uuid(user_manager, db_basic_user):
     user = await user_manager.get_by_uuid(uuid=db_basic_user.uuid)
     assert user == db_basic_user
 
 
-@pytest.mark.asyncio
 async def test_get_user_by_uuid_not_found(user_manager):
     with pytest.raises(UserError, match=UserErrorMessage.NOT_FOUND_BY_UUID):
         await user_manager.get_by_uuid(uuid=UUID_NOT_IN_DB)
 
 
-@pytest.mark.asyncio
 async def test_get_user_by_email(user_manager, db_basic_user):
     user = await user_manager.get_by_email(email=EMAIL)
     assert user == db_basic_user
 
 
-@pytest.mark.asyncio
 async def test_get_user_by_email_not_found(user_manager):
     with pytest.raises(UserError, match=UserErrorMessage.NOT_FOUND_BY_EMAIL):
         await user_manager.get_by_email(email=EMAIL)
 
 
-@pytest.mark.asyncio
 async def test_patch_user(user_manager, db_complete_user: User):
     user_before_update = db_complete_user.model_copy()
     user = UserUpdate(first_name="Sam", last_name="Johnson")
@@ -109,7 +102,6 @@ async def test_patch_user(user_manager, db_complete_user: User):
     assert updated_user.updated_at > user_before_update.updated_at
 
 
-@pytest.mark.asyncio
 async def test_patch_email_is_none(user_manager, db_basic_user):
     user = UserUpdate(email=None)
 
@@ -117,7 +109,6 @@ async def test_patch_email_is_none(user_manager, db_basic_user):
         await user_manager.patch(uuid=db_basic_user.uuid, user=user)
 
 
-@pytest.mark.asyncio
 async def test_patch_user_with_unique_email(user_manager, db_basic_user):
     # create another user
     another_email = "another@example.com"
@@ -132,7 +123,6 @@ async def test_patch_user_with_unique_email(user_manager, db_basic_user):
         await user_manager.patch(uuid=db_basic_user.uuid, user=user)
 
 
-@pytest.mark.asyncio
 async def test_patch_user_not_found(user_manager):
     user = UserUpdate(first_name=FIRST_NAME, last_name=LAST_NAME)
 
@@ -140,7 +130,6 @@ async def test_patch_user_not_found(user_manager):
         await user_manager.patch(uuid=UUID_NOT_IN_DB, user=user)
 
 
-@pytest.mark.asyncio
 async def test_delete_user(db_basic_user, user_manager):
     await user_manager.delete(uuid=db_basic_user.uuid)
 
@@ -148,7 +137,6 @@ async def test_delete_user(db_basic_user, user_manager):
         await user_manager.get_by_uuid(uuid=db_basic_user.uuid)
 
 
-@pytest.mark.asyncio
 async def test_delete_user_not_found(user_manager):
     with pytest.raises(UserError, match=UserErrorMessage.NOT_FOUND_BY_UUID):
         await user_manager.delete(uuid=UUID_NOT_IN_DB)

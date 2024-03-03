@@ -5,7 +5,7 @@
 groups = ["default", "test", "lint", "debug", "config"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:03744f44abbc8db276ed9b470b68d59086fa8ca6ab57cb3d26cc0e5b8ffcd812"
+content_hash = "sha256:88db0fc61ae17fe979fd3fded411d7891042bd8262d9ed71a247b2816dce9efe"
 
 [[package]]
 name = "alembic"
@@ -1288,6 +1288,19 @@ dependencies = [
 files = [
     {file = "pytest-asyncio-0.23.5.tar.gz", hash = "sha256:3a048872a9c4ba14c3e90cc1aa20cbc2def7d01c7c8db3777ec281ba9c057675"},
     {file = "pytest_asyncio-0.23.5-py3-none-any.whl", hash = "sha256:4e7093259ba018d58ede7d5315131d21923a60f8a6e9ee266ce1589685c89eac"},
+]
+
+[[package]]
+name = "pytest-mock"
+version = "3.12.0"
+requires_python = ">=3.8"
+summary = "Thin-wrapper around the mock package for easier use with pytest"
+dependencies = [
+    "pytest>=5.0",
+]
+files = [
+    {file = "pytest-mock-3.12.0.tar.gz", hash = "sha256:31a40f038c22cad32287bb43932054451ff5583ff094bca6f675df2f8bc1a6e9"},
+    {file = "pytest_mock-3.12.0-py3-none-any.whl", hash = "sha256:0972719a7263072da3a21c7f4773069bcc7486027d7e8e1f81d98a47e701bc4f"},
 ]
 
 [[package]]

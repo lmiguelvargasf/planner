@@ -1,5 +1,6 @@
 import pytest
 import pytest_asyncio
+from planner.users.exceptions import UserError, UserErrorMessage
 from planner.users.managers import UserManager
 from planner.users.models import Sex, User, UserCreate, UserUpdate
 from sqlalchemy.exc import IntegrityError, NoResultFound
@@ -73,11 +74,10 @@ async def test_user_creation_full_data(validated_complete_user, user_manager, mo
 @pytest.mark.asyncio
 async def test_create_user_with_unique_email(db_basic_user, user_manager):
     # create another user with same email
-    user = UserCreate(email=EMAIL)
-    validated_user = User.model_validate(user)
+    with pytest.raises(UserError) as error:
+        await user_manager.create(BASIC_USER_CREATE)
 
-    with pytest.raises(IntegrityError, match="unique constraint"):
-        await user_manager.create(validated_user)
+    assert error.value.message == UserErrorMessage.DUPLICATE_EMAIL
 
 
 @pytest.mark.asyncio

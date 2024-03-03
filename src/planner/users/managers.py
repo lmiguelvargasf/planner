@@ -16,14 +16,7 @@ class UserManager:
 
     async def create(self, user: UserCreate) -> User:
         db_user = User.model_validate(user)
-        self.session.add(db_user)
-
-        try:
-            await self.session.commit()
-        except IntegrityError as error:
-            self._handle_integrity_error(error)
-
-        await self.session.refresh(db_user)
+        await self._save_and_refresh(db_user)
         return db_user
 
     async def get_by_uuid(self, *, uuid: UUID) -> User:
@@ -47,12 +40,7 @@ class UserManager:
         db_user = await self.get_by_uuid(uuid=uuid)
         dumped_user = user.model_dump(exclude_unset=True)
         db_user.sqlmodel_update(dumped_user)
-        self.session.add(db_user)
-        try:
-            await self.session.commit()
-        except IntegrityError as error:
-            self._handle_integrity_error(error)
-        await self.session.refresh(db_user)
+        await self._save_and_refresh(db_user)
         return db_user
 
     async def delete(self, *, uuid: UUID) -> None:
@@ -68,3 +56,11 @@ class UserManager:
                 raise UserError(message=UserErrorMessage.DUPLICATE_EMAIL) from error
             case _:
                 raise error from error
+
+    async def _save_and_refresh(self, user: User) -> None:
+        self.session.add(user)
+        try:
+            await self.session.commit()
+        except IntegrityError as error:
+            self._handle_integrity_error(error)
+        await self.session.refresh(user)

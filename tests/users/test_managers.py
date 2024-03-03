@@ -3,7 +3,6 @@ import pytest_asyncio
 from planner.users.exceptions import UserError, UserErrorMessage
 from planner.users.managers import UserManager
 from planner.users.models import Sex, User, UserCreate, UserUpdate
-from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 EMAIL = "user@example.com"
@@ -121,8 +120,10 @@ async def test_patch_user(user_manager, db_complete_user: User):
 async def test_patch_email_is_none(user_manager, db_basic_user):
     user = UserUpdate(email=None)
 
-    with pytest.raises(IntegrityError, match="violates not-null constraint"):
+    with pytest.raises(UserError) as error:
         await user_manager.patch(uuid=db_basic_user.uuid, user=user)
+
+    assert error.value.message == UserErrorMessage.EMAIL_REQUIRED
 
 
 @pytest.mark.asyncio
@@ -136,27 +137,35 @@ async def test_patch_user_with_unique_email(user_manager, db_basic_user):
     # update user with email of another user
     user = UserUpdate(email=another_email)
 
-    with pytest.raises(IntegrityError, match="unique constraint"):
+    with pytest.raises(UserError) as error:
         await user_manager.patch(uuid=db_basic_user.uuid, user=user)
+
+    assert error.value.message == UserErrorMessage.DUPLICATE_EMAIL
 
 
 @pytest.mark.asyncio
 async def test_patch_user_not_found(user_manager):
     user = UserUpdate(first_name=FIRST_NAME, last_name=LAST_NAME)
 
-    with pytest.raises(NoResultFound, match="No row was found"):
+    with pytest.raises(UserError) as error:
         await user_manager.patch(uuid=UUID_NOT_IN_DB, user=user)
+
+    assert error.value.message == UserErrorMessage.NOT_FOUND_BY_UUID
 
 
 @pytest.mark.asyncio
 async def test_delete_user(db_basic_user, user_manager):
     await user_manager.delete(uuid=db_basic_user.uuid)
 
-    with pytest.raises(NoResultFound, match="No row was found"):
+    with pytest.raises(UserError) as error:
         await user_manager.get_by_uuid(uuid=db_basic_user.uuid)
+
+    assert error.value.message == UserErrorMessage.NOT_FOUND_BY_UUID
 
 
 @pytest.mark.asyncio
 async def test_delete_user_not_found(user_manager):
-    with pytest.raises(NoResultFound, match="No row was found"):
+    with pytest.raises(UserError) as error:
         await user_manager.delete(uuid=UUID_NOT_IN_DB)
+
+    assert error.value.message == UserErrorMessage.NOT_FOUND_BY_UUID

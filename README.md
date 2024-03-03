@@ -122,6 +122,7 @@ After the database setup, the following steps are followed to set up the project
 To enhance the testing capabilities, the following plugins are integrated with `pytest`:
 
 - [`pytest-asyncio`][pytest-asyncio] - to facilitate testing of code that uses the `asyncio` library.
+- [`pytest-mock`][pytest-mock] - to ease mocking.
 
 ### Running Tests
 
@@ -170,4 +171,5 @@ Executing either command starts the JupyterLab server, enabling access to notebo
 [pre-commit]: https://pre-commit.com/
 [pytest]: https://docs.pytest.org/
 [pytest-asyncio]: https://github.com/pytest-dev/pytest-asyncio
+[pytest-mock]: https://github.com/pytest-dev/pytest-mock
 [python]: https://www.python.org/

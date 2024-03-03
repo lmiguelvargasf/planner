@@ -9,7 +9,8 @@ class BaseError(ABC, Exception):
     message: str
 
     def __post_init__(self) -> None:
-        """
+        """Initializes the base Exception with the provided message.
+
         Since dataclasses automatically generate an `__init__` method that only
         assigns attributes, this method is necessary to ensure the base Exception
         class is properly initialized with the custom message attribute. This

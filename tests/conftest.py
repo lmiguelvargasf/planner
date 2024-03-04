@@ -29,6 +29,7 @@ async def session():
 
 @pytest_asyncio.fixture
 async def client():
+    """Yield an async client to test ASGI applications."""
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as async_client:
         yield async_client

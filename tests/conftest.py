@@ -1,6 +1,8 @@
 import pytest_asyncio
+from httpx import ASGITransport, AsyncClient
 from planner.core.models import BaseModel
 from planner.database import async_engine, async_session
+from planner.main import app
 
 
 @pytest_asyncio.fixture(scope="function")
@@ -23,3 +25,10 @@ async def session():
         await conn.run_sync(BaseModel.metadata.drop_all)
 
     await async_engine.dispose()
+
+
+@pytest_asyncio.fixture
+async def client():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as async_client:
+        yield async_client

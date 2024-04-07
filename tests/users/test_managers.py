@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 import pytest_asyncio
 from planner.users.exceptions import UserError, UserErrorMessage
@@ -15,7 +17,7 @@ USER_DATA = dict(
     middle_name="Doe",
     last_name=LAST_NAME,
     second_last_name="Johnson",
-    date_of_birth="1990-01-01",
+    date_of_birth=datetime.strptime("1990-01-01", "%Y-%m-%d").date(),
     sex=Sex.MALE,
     email=EMAIL,
     hashed_password="password",
@@ -62,8 +64,12 @@ async def test_user_creation_full_data(user_manager):
 
 
 async def test_create_user_with_unique_email(db_basic_user, user_manager):
+    initial_count = await user_manager.count
     with pytest.raises(UserError, match=UserErrorMessage.DUPLICATE_EMAIL):
         await user_manager.create(BASIC_USER_CREATE)
+    await user_manager.session.rollback()
+    final_count = await user_manager.count
+    assert final_count == initial_count
 
 
 async def test_get_user_by_uuid(user_manager, db_basic_user):

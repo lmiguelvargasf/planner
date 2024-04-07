@@ -150,3 +150,27 @@ async def test_delete_user(db_basic_user, user_manager):
 async def test_delete_user_not_found(user_manager):
     with pytest.raises(UserError, match=UserErrorMessage.NOT_FOUND_BY_UUID):
         await user_manager.delete(uuid=UUID_NOT_IN_DB)
+
+
+async def test_count_with_no_users(user_manager):
+    count = await user_manager.count
+    assert count == 0, "Count should be 0 when no users are present."
+
+
+async def test_count_with_users_added(user_manager):
+    await user_manager.create(UserCreate(email="user1@example.com"))
+    await user_manager.create(UserCreate(email="user2@example.com"))
+    count = await user_manager.count
+    assert count == 2, "Count should be 2 after adding two users."
+
+
+async def test_count_after_removing_users(user_manager):
+    users_to_create = 5
+    for i in range(users_to_create):
+        user = await user_manager.create(UserCreate(email=f"user{i}@example.com"))
+    users_to_remove = 3
+    for i in range(users_to_remove):
+        user = await user_manager.get_by_email(email=f"user{i}@example.com")
+        await user_manager.delete(uuid=user.uuid)
+    count = await user_manager.count
+    assert count == users_to_create - users_to_remove

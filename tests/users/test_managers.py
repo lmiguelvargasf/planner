@@ -10,7 +10,7 @@ FIRST_NAME = "John"
 LAST_NAME = "Smith"
 UUID_NOT_IN_DB = "00000000-0000-0000-0000-000000000000"
 BASIC_USER_CREATE = UserCreate(email=EMAIL)
-COMPLETE_USER_CREATE = UserCreate(
+USER_DATA = dict(
     first_name=FIRST_NAME,
     middle_name="Doe",
     last_name=LAST_NAME,
@@ -22,6 +22,7 @@ COMPLETE_USER_CREATE = UserCreate(
     is_active=False,
     is_superuser=True,
 )
+COMPLETE_USER_CREATE = UserCreate(**USER_DATA)
 pytestmark = pytest.mark.asyncio
 
 
@@ -51,11 +52,13 @@ async def test_user_creation_required_fields(user_manager):
     assert final_count == initial_count + 1
 
 
-async def test_user_creation_full_data(user_manager, mocker):
-    validated_user = User.model_validate(COMPLETE_USER_CREATE)
-    mocker.patch.object(User, "model_validate", return_value=validated_user)
+async def test_user_creation_full_data(user_manager):
+    initial_count = await user_manager.count
     db_user = await user_manager.create(COMPLETE_USER_CREATE)
-    assert db_user == validated_user
+    for key, value in USER_DATA.items():
+        assert getattr(db_user, key) == value
+    final_count = await user_manager.count
+    assert final_count == initial_count + 1
 
 
 async def test_create_user_with_unique_email(db_basic_user, user_manager):

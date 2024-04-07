@@ -9,12 +9,14 @@ from planner.users.models import User, UserRead
 
 DB_USER = User(email="user@example.com")
 user_manager_mock = AsyncMock()
-user_manager_mock.create = AsyncMock(return_value=User.model_validate(DB_USER))
+validated_user = User.model_validate(DB_USER)
+user_manager_mock.create = AsyncMock(return_value=validated_user)
+user_manager_mock.get_by_uuid = AsyncMock(return_value=validated_user)
 app.dependency_overrides[get_user_manager] = lambda: user_manager_mock
 
 
 @pytest.mark.asyncio
-async def test_create_user(client: AsyncClient, mocker):
+async def test_create_user(client: AsyncClient):
     response = await client.post(
         "/users/",
         content=DB_USER.model_dump_json(exclude_unset=True),
@@ -23,4 +25,14 @@ async def test_create_user(client: AsyncClient, mocker):
     actual_user = UserRead.model_validate(response.json())
 
     assert response.status_code == status.HTTP_201_CREATED
+    assert expected_user == actual_user
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_uuid(client: AsyncClient):
+    response = await client.get(f"/users/{DB_USER.uuid}")
+    expected_user = UserRead.model_validate(DB_USER)
+    actual_user = UserRead.model_validate(response.json())
+
+    assert response.status_code == status.HTTP_200_OK
     assert expected_user == actual_user

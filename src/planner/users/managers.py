@@ -67,4 +67,5 @@ class UserManager:
 
     @property
     async def count(self) -> int:
-        return (await self.session.exec(select(func.count()).select_from(User))).one()
+        query = select(func.count()).select_from(User)
+        return (await self.session.exec(query)).one()

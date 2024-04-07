@@ -3,7 +3,7 @@ from uuid import UUID
 
 from asyncpg.exceptions import NotNullViolationError, UniqueViolationError
 from sqlalchemy.exc import IntegrityError, NoResultFound
-from sqlmodel import select
+from sqlmodel import func, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .exceptions import UserError, UserErrorMessage
@@ -64,3 +64,7 @@ class UserManager:
         except IntegrityError as error:
             self._handle_integrity_error(error)
         await self.session.refresh(user)
+
+    @property
+    async def count(self) -> int:
+        return (await self.session.exec(select(func.count()).select_from(User))).one()

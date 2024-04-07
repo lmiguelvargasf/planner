@@ -3,7 +3,6 @@ import pytest_asyncio
 from planner.users.exceptions import UserError, UserErrorMessage
 from planner.users.managers import UserManager
 from planner.users.models import Sex, User, UserCreate, UserUpdate
-from sqlmodel import func, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 EMAIL = "user@example.com"
@@ -45,14 +44,10 @@ async def db_complete_user(user_manager):
 
 
 async def test_user_creation_required_fields(user_manager):
-    initial_count = (
-        await user_manager.session.exec(select(func.count()).select_from(User))
-    ).one()
+    initial_count = await user_manager.count
     db_user = await user_manager.create(BASIC_USER_CREATE)
     assert db_user.email == EMAIL
-    final_count = (
-        await user_manager.session.exec(select(func.count()).select_from(User))
-    ).one()
+    final_count = await user_manager.count
     assert final_count == initial_count + 1
 
 

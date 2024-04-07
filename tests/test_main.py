@@ -1,9 +1,7 @@
-import pytest
 from fastapi import status
 from httpx import AsyncClient
 
 
-@pytest.mark.asyncio
 async def test_app_status(client: AsyncClient):
     response = await client.get("/")
 

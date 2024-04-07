@@ -1,6 +1,5 @@
 from unittest.mock import AsyncMock
 
-import pytest
 from fastapi import status
 from httpx import AsyncClient
 from planner.main import app
@@ -15,7 +14,6 @@ user_manager_mock.get_by_uuid = AsyncMock(return_value=validated_user)
 app.dependency_overrides[get_user_manager] = lambda: user_manager_mock
 
 
-@pytest.mark.asyncio
 async def test_create_user(client: AsyncClient):
     response = await client.post(
         "/users/",
@@ -28,7 +26,6 @@ async def test_create_user(client: AsyncClient):
     assert expected_user == actual_user
 
 
-@pytest.mark.asyncio
 async def test_get_user_by_uuid(client: AsyncClient):
     response = await client.get(f"/users/{DB_USER.uuid}")
     expected_user = UserRead.model_validate(DB_USER)

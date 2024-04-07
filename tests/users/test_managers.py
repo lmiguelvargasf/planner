@@ -25,7 +25,6 @@ USER_DATA = dict(
     is_superuser=True,
 )
 COMPLETE_USER_CREATE = UserCreate(**USER_DATA)
-pytestmark = pytest.mark.asyncio
 
 
 @pytest.fixture

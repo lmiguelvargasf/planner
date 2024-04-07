@@ -137,10 +137,14 @@ async def test_patch_user_not_found(user_manager):
 
 
 async def test_delete_user(db_basic_user, user_manager):
+    initial_count = await user_manager.count
     await user_manager.delete(uuid=db_basic_user.uuid)
 
     with pytest.raises(UserError, match=UserErrorMessage.NOT_FOUND_BY_UUID):
         await user_manager.get_by_uuid(uuid=db_basic_user.uuid)
+
+    final_count = await user_manager.count
+    assert final_count == initial_count - 1
 
 
 async def test_delete_user_not_found(user_manager):

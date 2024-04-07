@@ -14,12 +14,16 @@ app.dependency_overrides[get_user_manager] = lambda: user_manager_mock
 
 
 @pytest.mark.asyncio
-async def test_create_user(client: AsyncClient):
-    expected_user = UserRead.model_validate(DB_USER)
+async def test_create_user(client: AsyncClient, mocker):
+    validated_user = User.model_validate(DB_USER)
+    mocker.patch(
+        "planner.users.managers.UserManager.create", return_value=validated_user
+    )
     response = await client.post(
         "/users/",
         content=DB_USER.model_dump_json(exclude_unset=True),
     )
+    expected_user = UserRead.model_validate(validated_user)
     actual_user = UserRead.model_validate(response.json())
 
     assert response.status_code == status.HTTP_201_CREATED

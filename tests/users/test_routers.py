@@ -1,4 +1,3 @@
-from typing import Callable
 from unittest.mock import AsyncMock
 
 from fastapi import status
@@ -15,17 +14,17 @@ UPDATED_USER = User.model_validate(
 )
 
 
-def get_user_manager_mock() -> Callable[[], AsyncMock]:
+def get_user_manager_mock() -> AsyncMock:
     user_manager_mock = AsyncMock()
     user_manager_mock.create = AsyncMock(return_value=USER)
     user_manager_mock.get_by_uuid = AsyncMock(return_value=USER)
     user_manager_mock.get_by_email = AsyncMock(return_value=USER)
     user_manager_mock.patch = AsyncMock(return_value=UPDATED_USER)
 
-    return lambda: user_manager_mock
+    return user_manager_mock
 
 
-app.dependency_overrides[get_user_manager] = get_user_manager_mock()
+app.dependency_overrides[get_user_manager] = get_user_manager_mock
 
 
 async def test_create_user(client: AsyncClient):

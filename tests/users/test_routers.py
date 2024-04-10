@@ -9,10 +9,9 @@ from planner.users.models import User, UserCreate, UserRead, UserUpdate
 USER_CREATE = UserCreate(email="user@example.com")
 USER = User.model_validate(USER_CREATE)
 user_manager_mock = AsyncMock()
-validated_user = User.model_validate(USER)
-user_manager_mock.create = AsyncMock(return_value=validated_user)
-user_manager_mock.get_by_uuid = AsyncMock(return_value=validated_user)
-user_manager_mock.get_by_email = AsyncMock(return_value=validated_user)
+user_manager_mock.create = AsyncMock(return_value=USER)
+user_manager_mock.get_by_uuid = AsyncMock(return_value=USER)
+user_manager_mock.get_by_email = AsyncMock(return_value=USER)
 USER_UPDATE = UserUpdate(email="updated@example.com")
 UPDATED_USER = User.model_validate(
     USER.model_dump() | USER_UPDATE.model_dump(exclude_unset=True)

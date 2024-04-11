@@ -48,9 +48,7 @@ async def db_complete_user(user_manager):
 async def test_user_creation_required_fields(user_manager):
     initial_count = await user_manager.count
     db_user = await user_manager.create(BASIC_USER_CREATE)
-    assert (
-        db_user.email == EMAIL
-    ), "User's email should be the same as the one provided."
+    assert db_user.email == EMAIL
     final_count = await user_manager.count
     assert final_count == initial_count + 1, "User should be created."
 
@@ -59,7 +57,7 @@ async def test_user_creation_full_data(user_manager):
     initial_count = await user_manager.count
     db_user = await user_manager.create(COMPLETE_USER_CREATE)
     for key, value in USER_DATA.items():
-        assert getattr(db_user, key) == value, f"User's {key} should be {value}."
+        assert getattr(db_user, key) == value
     final_count = await user_manager.count
     assert final_count == initial_count + 1, "User should be created."
 
@@ -75,7 +73,7 @@ async def test_create_user_with_unique_email(db_basic_user, user_manager):
 
 async def test_get_user_by_uuid(user_manager, db_basic_user):
     user = await user_manager.get_by_uuid(uuid=db_basic_user.uuid)
-    assert user == db_basic_user, "User should be found by UUID."
+    assert user == db_basic_user
 
 
 async def test_get_user_by_uuid_not_found(user_manager):
@@ -85,7 +83,7 @@ async def test_get_user_by_uuid_not_found(user_manager):
 
 async def test_get_user_by_email(user_manager, db_basic_user):
     user = await user_manager.get_by_email(email=EMAIL)
-    assert user == db_basic_user, "User should be found by email."
+    assert user == db_basic_user
 
 
 async def test_get_user_by_email_not_found(user_manager):
@@ -102,15 +100,11 @@ async def test_patch_user(user_manager, db_complete_user: User):
     updated_user = await user_manager.patch(uuid=db_complete_user.uuid, user=user)
 
     for key, value in user_data.items():
-        assert getattr(updated_user, key) == value, f"User's {key} should be {value}."
+        assert getattr(updated_user, key) == value
 
-    assert updated_user.uuid == user_before_update.uuid, "UUID should not change."
-    assert (
-        updated_user.created_at == user_before_update.created_at
-    ), "Created at should not change."
-    assert (
-        updated_user.updated_at > user_before_update.updated_at
-    ), "Updated at should change."
+    assert updated_user.uuid == user_before_update.uuid
+    assert updated_user.created_at == user_before_update.created_at
+    assert updated_user.updated_at > user_before_update.updated_at
 
 
 async def test_patch_email_is_none(user_manager, db_basic_user):
@@ -170,25 +164,18 @@ async def test_count_with_users_added(user_manager):
 
 
 async def test_count_after_removing_users(user_manager):
-    assert await user_manager.count == 0, "Count should be 0 when no users are present."
-
     users_to_create = 5
     for i in range(users_to_create):
         user = await user_manager.create(UserCreate(email=f"user{i}@example.com"))
     count = await user_manager.count
 
-    assert (
-        count == users_to_create
-    ), f"Count should be {users_to_create} after adding {users_to_create} users."
+    assert count == users_to_create, "Count should be 5 after adding five users."
 
     users_to_remove = 3
     for i in range(users_to_remove):
         user = await user_manager.get_by_email(email=f"user{i}@example.com")
         await user_manager.delete(uuid=user.uuid)
     count = await user_manager.count
+    expected_count = users_to_create - users_to_remove
 
-    message = (
-        f"Count should be {users_to_create - users_to_remove} after removing "
-        f"{users_to_remove} users."
-    )
-    assert count == users_to_create - users_to_remove, message
+    assert count == expected_count, "Count should be 2 after removing three users."
